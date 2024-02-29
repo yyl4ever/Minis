@@ -107,13 +107,16 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
 
 		try {
     		clz = Class.forName(bd.getClassName());
-    		
+
+			// 处理构造器参数
     		//handle constructor
     		ArgumentValues argumentValues = bd.getConstructorArgumentValues();
+			// 构造器参数不为空
     		if (!argumentValues.isEmpty()) {
         		Class<?>[] paramTypes = new Class<?>[argumentValues.getArgumentCount()];
-        		Object[] paramValues =   new Object[argumentValues.getArgumentCount()];  
-    			for (int i=0; i<argumentValues.getArgumentCount(); i++) {
+        		Object[] paramValues =   new Object[argumentValues.getArgumentCount()];
+				// 对每个参数根据类型进行处理
+				for (int i=0; i<argumentValues.getArgumentCount(); i++) {
     				ArgumentValue argumentValue = argumentValues.getIndexedArgumentValue(i);
     				if ("String".equals(argumentValue.getType()) || "java.lang.String".equals(argumentValue.getType())) {
     					paramTypes[i] = String.class;
@@ -128,12 +131,15 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
         				paramValues[i] = Integer.valueOf((String) argumentValue.getValue()).intValue();
     				}
     				else {
+						// 默认为 String
     					paramTypes[i] = String.class;
         				paramValues[i] = argumentValue.getValue();    					
     				}
     			}
 				try {
+					// 按照特定的构造器创建实例
 					con = clz.getConstructor(paramTypes);
+					// 构造器注入
 					obj = con.newInstance(paramValues);
 				} catch (NoSuchMethodException e) {
 					e.printStackTrace();
@@ -146,6 +152,7 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
 				}  
     		}
     		else {
+				// 没有参数则直接创建实例
     			obj = clz.newInstance();
     		}
 
@@ -166,7 +173,8 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
 				String pType = propertyValue.getType();
     			Object pValue = propertyValue.getValue();
     			
-    			Class<?>[] paramTypes = new Class<?>[1];    			
+    			Class<?>[] paramTypes = new Class<?>[1];
+				// 对每一个属性，分数据类型进行处理
 				if ("String".equals(pType) || "java.lang.String".equals(pType)) {
 					paramTypes[0] = String.class;
 				}
@@ -180,13 +188,15 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
 					paramTypes[0] = String.class;
 				}
 				
-				Object[] paramValues =   new Object[1];  
+				Object[] paramValues = new Object[1];
 				paramValues[0] = pValue;
 
+				// 按照 setXxxx 规范查找 setter 方法，调用 setter 方法设置属性
     			String methodName = "set" + pName.substring(0,1).toUpperCase() + pName.substring(1);
 				    			
     			Method method = null;
 				try {
+					// 属性注入
 					method = clz.getMethod(methodName, paramTypes);
 				} catch (NoSuchMethodException e) {
 					e.printStackTrace();
