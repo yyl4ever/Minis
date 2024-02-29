@@ -11,18 +11,24 @@ import com.minis.beans.factory.config.ConstructorArgumentValues;
 import com.minis.beans.factory.support.AbstractBeanFactory;
 import com.minis.core.Resource;
 
+/**
+ * 将解析好的 xml 转换为 BeanDefinitionReader
+ */
 public class XmlBeanDefinitionReader {
 	AbstractBeanFactory bf;
 	public XmlBeanDefinitionReader(AbstractBeanFactory bf) {
 		this.bf = bf;
 	}
 	public void loadBeanDefinitions(Resource res) {
+		// 对配置文件中的每个 <bean> 处理
         while (res.hasNext()) {
         	Element element = (Element)res.next();
+			// 获取 bean 的基本信息
             String beanID=element.attributeValue("id");
             String beanClassName=element.attributeValue("class");
             String initMethod = element.attributeValue("init-method");
 
+			// 构建 beanDefinition
             BeanDefinition beanDefinition=new BeanDefinition(beanID,beanClassName);
             beanDefinition.setInitMethodName(initMethod);
                     	
@@ -64,7 +70,7 @@ public class XmlBeanDefinitionReader {
         	beanDefinition.setDependsOn(refArray);
         	//end of handle properties
 
-            this.bf.registerBeanDefinition(beanID,beanDefinition);
+            this.bf.registerBeanDefinition(beanID, beanDefinition);
         }
 	}
 	

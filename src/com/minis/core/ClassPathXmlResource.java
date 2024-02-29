@@ -11,6 +11,9 @@ import org.dom4j.io.SAXReader;
 
 import com.minis.beans.factory.config.BeanDefinition;
 
+/**
+ * 解析 xml
+ */
 public class ClassPathXmlResource implements Resource {
 	Document document;
 	Element rootElement;
@@ -18,10 +21,13 @@ public class ClassPathXmlResource implements Resource {
 	
 	public ClassPathXmlResource(String fileName) {
         SAXReader saxReader=new SAXReader();
+		// 将配置文件装载进来 -- 类加载器获取资源
         URL xmlPath=this.getClass().getClassLoader().getResource(fileName);
         try {
 			this.document = saxReader.read(xmlPath);
+			// 获取根元素
 			this.rootElement=document.getRootElement();
+			// 生成一个迭代器，用于遍历
 			this.elementIterator=this.rootElement.elementIterator();
 		} catch (DocumentException e) {
 			e.printStackTrace();

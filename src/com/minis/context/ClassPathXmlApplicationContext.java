@@ -17,19 +17,30 @@ import com.minis.core.ClassPathXmlResource;
 import com.minis.core.Resource;
 import com.minis.core.env.Environment;
 
+/**
+ * context 负责整合容器的启动过程，读取外部配置，解析 bean 定义，构建 beanDefinition, 创建 beanFactory(注入 bf)
+ * 思想：一个类只做一个事情
+ * 作为整合方，对外提供获取和注册 bean，需要遵守接口约束，所以实现了 BeanFactory 接口
+ */
 public class ClassPathXmlApplicationContext extends AbstractApplicationContext{
 	DefaultListableBeanFactory beanFactory;
 	private final List<BeanFactoryPostProcessor> beanFactoryPostProcessors =
-			new ArrayList<BeanFactoryPostProcessor>();	
+			new ArrayList<BeanFactoryPostProcessor>();
 
+	/**
+	 *
+	 * @param fileName
+	 */
     public ClassPathXmlApplicationContext(String fileName){
     	this(fileName, true);
     }
 
     public ClassPathXmlApplicationContext(String fileName, boolean isRefresh){
+		// 读取资源
     	Resource res = new ClassPathXmlResource(fileName);
     	DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
         XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(bf);
+		// 将资源解析为 bf 加载
         reader.loadBeanDefinitions(res);
         
         this.beanFactory = bf;
