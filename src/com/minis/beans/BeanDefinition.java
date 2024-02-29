@@ -3,17 +3,33 @@ package com.minis.beans;
 public class BeanDefinition {
 	String SCOPE_SINGLETON = "singleton";
 	String SCOPE_PROTOTYPE = "prototype";
-	
+	/**
+	 * 要不要在加载的时候初始化
+	 */
 	private boolean lazyInit = false;
+	/**
+	 * 记录 bean 之间的依赖关系
+	 */
 	private String[] dependsOn;
+	/**
+	 * 构造器参数
+	 */
 	private ArgumentValues constructorArgumentValues;
-
+	/**
+	 * 属性列表
+	 */
 	private PropertyValues propertyValues;
+	/**
+	 * 当一个 bean 构造完成，是否需要框架调用初始化方法
+	 */
 	private String initMethodName;
 	
 	private volatile Object beanClass;
     private String id;
     private String className;
+	/**
+	 * 单例还是原型模式
+	 */
     private String scope=SCOPE_SINGLETON;
     
     public String getId() {

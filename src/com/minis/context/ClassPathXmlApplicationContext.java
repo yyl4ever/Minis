@@ -19,6 +19,10 @@ import com.minis.beans.XmlBeanDefinitionReader;
 import com.minis.core.ClassPathXmlResource;
 import com.minis.core.Resource;
 
+/**
+ * ClassPathXmlApplicationContext：作为外部集成包装的一个类
+ * ApplicationEventPublisher：监控容器的启动状态，同时兼具发布事件的功能
+ */
 public class ClassPathXmlApplicationContext implements BeanFactory,ApplicationEventPublisher{
 	SimpleBeanFactory beanFactory;
 	

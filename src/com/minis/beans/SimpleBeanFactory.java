@@ -9,7 +9,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory,BeanDefinitionRegistry{
+/**
+ * 将 bean 的获取和注册分离
+ * 既是一个 bean 工厂又是一个 bf 仓库
+ *
+ * 如果一个类声明它实现了某个接口，那么它偏向于告诉外部它是那个接口，能对外提供某种能力；
+ * 如果一个类继承某个实现类，那么它偏向于获得该实现类的能力；
+ * 如果一个类既想获得能力又想对外提供能力，就可以同时声明实现接口和继承实现类，再自己修改增强某些方法
+ *
+ */
+public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory, BeanDefinitionRegistry{
     private Map<String,BeanDefinition> beanDefinitionMap=new ConcurrentHashMap<>(256);
     private List<String> beanDefinitionNames=new ArrayList<>();
 
@@ -21,6 +30,7 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
         if (singleton == null) {
         		BeanDefinition bd = beanDefinitionMap.get(beanName);
             	singleton=createBean(bd);
+				// 注册 bean 实例
 				this.registerBean(beanName, singleton);
 				
 				if (bd.getInitMethodName() != null) {
@@ -46,7 +56,8 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
 	public void registerBeanDefinition(String name, BeanDefinition bd) {
     	this.beanDefinitionMap.put(name,bd);
     	this.beanDefinitionNames.add(name);
-    	if (!bd.isLazyInit()) {
+    	// 非懒加载就立刻调用 getBean
+		if (!bd.isLazyInit()) {
         	try {
 				getBean(name);
 			} catch (BeansException e) {

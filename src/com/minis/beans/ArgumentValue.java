@@ -1,5 +1,8 @@
 package com.minis.beans;
 
+/**
+ * 仅针对某一个参数
+ */
 public class ArgumentValue {
 		private Object value;
 		private String type;

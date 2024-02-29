@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-
+/**
+ * 一个 bean 有多个属性
+ */
 public class PropertyValues{
 	private final List<PropertyValue> propertyValueList;
 

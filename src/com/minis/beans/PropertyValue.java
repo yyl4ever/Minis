@@ -1,5 +1,8 @@
 package com.minis.beans;
 
+/**
+ * 仅针对某一个属性
+ */
 public class PropertyValue{
 	private final String type;
 	private final String name;

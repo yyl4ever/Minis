@@ -2,6 +2,9 @@ package com.minis.context;
 
 import java.util.EventObject;
 
+/**
+ * 监听应用的事件
+ */
 public class ApplicationEvent extends EventObject {
 
 	private static final long serialVersionUID = 1L;

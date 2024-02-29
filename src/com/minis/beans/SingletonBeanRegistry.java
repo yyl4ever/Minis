@@ -1,5 +1,8 @@
 package com.minis.beans;
 
+/**
+ * 管理单例 bean
+ */
 public interface SingletonBeanRegistry {
     void registerSingleton(String beanName, Object singletonObject);
 
@@ -7,6 +10,10 @@ public interface SingletonBeanRegistry {
 
     boolean containsSingleton(String beanName);
 
+    /**
+     * 获取所有单例 bean
+     * @return
+     */
     String[] getSingletonNames();
 
 }
