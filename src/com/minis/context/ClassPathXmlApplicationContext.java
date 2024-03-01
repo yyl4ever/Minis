@@ -22,6 +22,7 @@ public class ClassPathXmlApplicationContext implements BeanFactory,ApplicationEv
         this.beanFactory = bf;
         
         if (isRefresh) {
+			// 将整个容器激活，加载所有配置好的 bean
         	this.beanFactory.refresh();
         }
     }

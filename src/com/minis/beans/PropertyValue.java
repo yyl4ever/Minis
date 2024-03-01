@@ -4,6 +4,9 @@ public class PropertyValue{
 	private final String type;
 	private final String name;
 	private final Object value;
+	/**
+	 * 判断属性是引用还是值类型
+	 */
 	private final boolean isRef;
 
 	public PropertyValue(String type, String name, Object value, boolean isRef) {

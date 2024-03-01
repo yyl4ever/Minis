@@ -38,6 +38,7 @@ public class XmlBeanDefinitionReader {
             //handle properties
             List<Element> propertyElements = element.elements("property");
             PropertyValues PVS = new PropertyValues();
+			// 记录了引用的其他的 beans
             List<String> refs = new ArrayList<>();
             for (Element e : propertyElements) {
             	String pType = e.attributeValue("type");
