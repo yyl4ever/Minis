@@ -7,6 +7,9 @@ import com.minis.beans.BeansException;
 import com.minis.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import com.minis.beans.factory.support.AbstractBeanFactory;
 
+/**
+ * 所谓 AutowireCapable，是指 beanPostProcessors 是基于 AutowiredAnnotation
+ */
 public class AutowireCapableBeanFactory extends AbstractBeanFactory{
 	private final List<AutowiredAnnotationBeanPostProcessor> beanPostProcessors = new ArrayList<AutowiredAnnotationBeanPostProcessor>();
 	
@@ -21,6 +24,7 @@ public class AutowireCapableBeanFactory extends AbstractBeanFactory{
 		return this.beanPostProcessors;
 	}
 
+	@Override
 	public Object applyBeanPostProcessorsBeforeInitialization(Object existingBean, String beanName)
 			throws BeansException {
 
@@ -35,6 +39,7 @@ public class AutowireCapableBeanFactory extends AbstractBeanFactory{
 		return result;
 	}
 
+	@Override
 	public Object applyBeanPostProcessorsAfterInitialization(Object existingBean, String beanName)
 			throws BeansException {
 

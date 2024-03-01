@@ -6,6 +6,10 @@ import com.minis.beans.BeansException;
 import com.minis.beans.factory.config.AutowireCapableBeanFactory;
 import com.minis.beans.factory.config.BeanPostProcessor;
 
+/**
+ * 学习框架，功能实现不是主要的，而是结构和时序，光说功能，不要框架也能做
+ * 实例化--》注入属性--》后期装饰
+ */
 public class AutowiredAnnotationBeanPostProcessor implements BeanPostProcessor {
 	private AutowireCapableBeanFactory beanFactory;
 	
