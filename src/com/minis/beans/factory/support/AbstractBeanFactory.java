@@ -19,6 +19,10 @@ import com.minis.beans.factory.config.ConfigurableBeanFactory;
 import com.minis.beans.factory.config.ConstructorArgumentValue;
 import com.minis.beans.factory.config.ConstructorArgumentValues;
 
+/**
+ * 抽象，将 bean 工厂要做的事情框架搭出来，再在具体实现类中完善细节
+ * 接口抽象类，interface-abstract class-class
+ */
 public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport implements ConfigurableBeanFactory,BeanDefinitionRegistry{
     protected Map<String,BeanDefinition> beanDefinitionMap=new ConcurrentHashMap<>(256);
     protected List<String> beanDefinitionNames=new ArrayList<>();
@@ -37,7 +41,8 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
     	}
     }
 
-    public Object getBean(String beanName) throws BeansException{
+    @Override
+	public Object getBean(String beanName) throws BeansException{
         Object singleton = this.getSingleton(beanName);
         
         if (singleton == null) {
@@ -349,6 +354,14 @@ System.out.println(" class proxy after bean post processor " + singleton.getClas
 		return object;
 	}
 
+	/**
+	 * bean 初始化之前和之后执行的方法，交给具体的子类实现
+	 * beanFactory 和 beanPostProcessor 解耦了
+	 * @param existingBean
+	 * @param beanName
+	 * @return
+	 * @throws BeansException
+	 */
 	abstract public Object applyBeanPostProcessorsBeforeInitialization(Object existingBean, String beanName)
 			throws BeansException;
 

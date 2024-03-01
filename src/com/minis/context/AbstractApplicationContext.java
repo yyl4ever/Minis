@@ -63,7 +63,9 @@ public abstract class AbstractApplicationContext implements ApplicationContext{
 	
 	public void refresh() throws BeansException, IllegalStateException {
 		postProcessBeanFactory(getBeanFactory());
-		
+		/**
+		 * 先注册 beanPostProcess，让 beanFactory 里面有解释注解的处理器，然后在 getBean 的过程中调用它
+		 */
 		registerBeanPostProcessors(getBeanFactory());
 		
 		initApplicationEventPublisher();

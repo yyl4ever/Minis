@@ -19,6 +19,9 @@ import com.minis.core.env.Environment;
 
 public class ClassPathXmlApplicationContext extends AbstractApplicationContext{
 	DefaultListableBeanFactory beanFactory;
+	/**
+	 * 对 beanFactory 特殊处理
+	 */
 	private final List<BeanFactoryPostProcessor> beanFactoryPostProcessors =
 			new ArrayList<BeanFactoryPostProcessor>();	
 
