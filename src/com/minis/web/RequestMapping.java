@@ -8,5 +8,6 @@ import java.lang.annotation.RetentionPolicy;
 @Target(value={ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RequestMapping {
+    // 接收配置的 url
     String value() default "";
 }

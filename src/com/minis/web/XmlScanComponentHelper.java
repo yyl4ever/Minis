@@ -14,11 +14,13 @@ import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
 
 public class XmlScanComponentHelper {
+
 	    public static List<String> getNodeValue(URL xmlPath) {
 	    	List<String> packages = new ArrayList<>();
 	        SAXReader saxReader=new SAXReader();
 			Document document = null;
 			try {
+				// 加载配置文件
 				document = saxReader.read(xmlPath);
 			} catch (DocumentException e) {
 				e.printStackTrace();
@@ -26,6 +28,7 @@ public class XmlScanComponentHelper {
 	        Element root = document.getRootElement();
 	        Iterator it = root.elementIterator();
 
+			// 遍历节点
 	        while (it.hasNext()) {
 	            Element element = (Element) it.next();
 	            	packages.add(element.attributeValue("base-package"));
