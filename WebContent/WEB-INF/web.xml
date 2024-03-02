@@ -1,25 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:web="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID">
-  <context-param>
-    <param-name>contextConfigLocation</param-name>
-    <param-value>applicationContext.xml</param-value>
-  </context-param>
-  <listener>
-    <listener-class>
-	        com.minis.web.ContextLoaderListener
-	    </listener-class>
-  </listener>
-  <servlet>
-    <servlet-name>minisMVC</servlet-name>
-    <servlet-class>com.minis.web.DispatcherServlet</servlet-class>
-    <init-param>
-      <param-name>contextConfigLocation</param-name>
-      <param-value> /WEB-INF/minisMVC-servlet.xml </param-value>
-    </init-param>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>minisMVC</servlet-name>
-    <url-pattern>/</url-pattern>
-  </servlet-mapping>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:web="http://xmlns.jcp.org/xml/ns/javaee"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         id="WebApp_ID">
+    <!--在Tomcat启动的过程中先拿context-param，初始化Listener，在初始化过程中，创建IoC容器构建WAC（WebApplicationContext），加载所管理的Bean对象，并把 WAC 关联到 servlet context 里。
+        然后在DispatcherServlet初始化的时候，从sevletContext里获取属性拿到WAC，放到servlet的属性中，然后拿到Servlet的配置路径参数，之后再扫描路径下的包，调用refresh()方法加载Bean，最后配置url mapping。
+        思考：关键的时序节点预留接口，方便别人去拓展-->
+    <!--必须放在 WEB-INF 下-->
+    <!--应用的全局参数，会被存放在 ServletContext 中-->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>applicationContext.xml</param-value>
+    </context-param>
+    <listener>
+        <!--监听器，需要继承 ServletContextListener，初始化方法：contextInitialized() -->
+        <listener-class>
+            com.minis.web.ContextLoaderListener
+        </listener-class>
+    </listener>
+    <!--初始化过程：listener-->filter-->servlet-->
+    <servlet>
+        <servlet-name>minisMVC</servlet-name>
+        <servlet-class>com.minis.web.DispatcherServlet</servlet-class>
+        <!--参数servlet范围内有效-->
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/minisMVC-servlet.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>minisMVC</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
 </web-app>

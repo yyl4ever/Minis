@@ -7,6 +7,10 @@ import com.minis.context.ApplicationContext;
 public interface WebApplicationContext extends ApplicationContext {
 	String ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE = WebApplicationContext.class.getName() + ".ROOT";
 
+	/**
+	 * servlet 容器上下文
+	 * @return
+	 */
 	ServletContext getServletContext();
 	void setServletContext(ServletContext servletContext);
 }

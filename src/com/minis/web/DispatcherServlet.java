@@ -47,9 +47,9 @@ public class DispatcherServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
     	super.init(config);
-    	
+    	// 拿到启动时 ContextLoaderListener 放入的 WAC
     	this.webApplicationContext = (WebApplicationContext) this.getServletContext().getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
-    	
+    	// 拿到 servlet 中配置的参数： 「/WEB-INF/minisMVC-servlet.xml」
         sContextConfigLocation = config.getInitParameter("contextConfigLocation");
         
         URL xmlPath = null;
@@ -58,9 +58,10 @@ public class DispatcherServlet extends HttpServlet {
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
-        
+        // 扫描路径下的包
         this.packageNames = XmlScanComponentHelper.getNodeValue(xmlPath);
 
+		// 加载 bean
         Refresh();
         
     }
@@ -84,8 +85,9 @@ public class DispatcherServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 			try {
+				// obj 其实是 controller 实例
 				obj = clz.newInstance();
-				
+				// 使用已经初始化好的 wac 容器
 				populateBean(obj,controllerName);
 				
 				this.controllerObjs.put(controllerName, obj);
@@ -106,6 +108,7 @@ public class DispatcherServlet extends HttpServlet {
 		Class<?> clazz = bean.getClass();
 		Field[] fields = clazz.getDeclaredFields();
 		if(fields!=null){
+			// 遍历 controller 里面的所有字段
 			for(Field field : fields){
 				boolean isAutowired = field.isAnnotationPresent(Autowired.class);
 				if(isAutowired){
