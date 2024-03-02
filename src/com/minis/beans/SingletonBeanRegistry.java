@@ -1,5 +1,8 @@
 package com.minis.beans;
 
+/**
+ * 单例 bean 仓库
+ */
 public interface SingletonBeanRegistry {
     void registerSingleton(String beanName, Object singletonObject);
 

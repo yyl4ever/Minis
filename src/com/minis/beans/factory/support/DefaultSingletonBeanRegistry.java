@@ -9,9 +9,18 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.minis.beans.factory.config.SingletonBeanRegistry;
 
+/**
+ * 单例 bean 仓库的默认实现
+ */
 public class DefaultSingletonBeanRegistry  implements SingletonBeanRegistry {
     protected List<String> beanNames=new ArrayList<>();
+	/**
+	 * 单例容器
+	 */
     protected Map<String, Object> singletonObjects =new ConcurrentHashMap<>(256);
+	/**
+	 * 依赖管理
+	 */
     protected Map<String,Set<String>> dependentBeanMap = new ConcurrentHashMap<>(64);
     protected Map<String,Set<String>> dependenciesForBeanMap = new ConcurrentHashMap<>(64);
     

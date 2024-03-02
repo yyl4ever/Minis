@@ -35,7 +35,8 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
     	}
     }
 
-    public Object getBean(String beanName) throws BeansException{
+    @Override
+	public Object getBean(String beanName) throws BeansException{
         Object singleton = this.getSingleton(beanName);
         
         if (singleton == null) {

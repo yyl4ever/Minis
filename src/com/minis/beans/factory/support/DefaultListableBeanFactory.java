@@ -10,6 +10,9 @@ import com.minis.beans.factory.config.AbstractAutowireCapableBeanFactory;
 import com.minis.beans.factory.config.BeanDefinition;
 import com.minis.beans.factory.config.ConfigurableListableBeanFactory;
 
+/***
+ * ioc 引擎：继承了 beanFactory 来实现 bean 的创建和管理
+ */
 public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory 
 					implements ConfigurableListableBeanFactory{
 

@@ -6,6 +6,9 @@ import java.util.List;
 import com.minis.beans.BeansException;
 import com.minis.beans.factory.support.AbstractBeanFactory;
 
+/**
+ * 提供成员 List<BeanPostProcessor>，因而可以进行更多的 bean 处理操作
+ */
 public abstract class AbstractAutowireCapableBeanFactory 
 						extends AbstractBeanFactory implements AutowireCapableBeanFactory{
 	private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<BeanPostProcessor>();

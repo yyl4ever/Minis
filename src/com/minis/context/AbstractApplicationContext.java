@@ -11,6 +11,9 @@ import com.minis.beans.factory.config.BeanPostProcessor;
 import com.minis.beans.factory.config.ConfigurableListableBeanFactory;
 import com.minis.core.env.Environment;
 
+/**
+ * interface-abstract-class 模式
+ */
 public abstract class AbstractApplicationContext implements ApplicationContext{
 	private Environment environment;
 
@@ -56,20 +59,25 @@ public abstract class AbstractApplicationContext implements ApplicationContext{
 	}
 	
 	
+	@Override
 	public void refresh() throws BeansException, IllegalStateException {
+		// 先有容器的启动，然后才是加载各个 bean，这里可以让开发者在容器启动后做一些处理
 		postProcessBeanFactory(getBeanFactory());
-		
+		// 可以增加对 bean 的额外修饰代码进行后期处理
 		registerBeanPostProcessors(getBeanFactory());
-		
+
+		// 初始化事件发布者
 		initApplicationEventPublisher();
 
 		onRefresh();
-		
+
+		// 注册监听者
 		registerListeners();
 		
 		finishRefresh();
 	}
-	
+
+	// 抽象方法，提高扩展性
 	abstract void registerListeners();
 	abstract void initApplicationEventPublisher();
 	abstract void postProcessBeanFactory(ConfigurableListableBeanFactory bf);

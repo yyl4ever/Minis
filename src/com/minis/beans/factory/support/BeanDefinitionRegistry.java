@@ -2,6 +2,9 @@ package com.minis.beans.factory.support;
 
 import com.minis.beans.factory.config.BeanDefinition;
 
+/**
+ * 对 bd 操作
+ */
 public interface BeanDefinitionRegistry {
 	void registerBeanDefinition(String name, BeanDefinition bd);
 	void removeBeanDefinition(String name);
