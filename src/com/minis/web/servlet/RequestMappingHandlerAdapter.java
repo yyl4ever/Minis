@@ -16,12 +16,24 @@ public class RequestMappingHandlerAdapter implements HandlerAdapter {
 		this.wac = wac;
 	}
 
+	/**
+	 * 接受前端请求，通过反射调用方法
+	 * @param request
+	 * @param response
+	 * @param handler
+	 * @throws Exception
+	 */
 	@Override
 	public void handle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		handleInternal(request, response, (HandlerMethod) handler);
 	}
 
+	/**
+	 * @param request
+	 * @param response
+	 * @param handler 封装了当前请求的 url，和对应请求指向的 bean
+	 */
 	private void handleInternal(HttpServletRequest request, HttpServletResponse response,
 			HandlerMethod handler) {
 

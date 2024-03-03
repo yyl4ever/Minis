@@ -6,7 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 存放和管理 url 的映射关系
+ */
 public class MappingRegistry {
+	/**
+	 * url 的相关映射关系
+	 */
     private List<String> urlMappingNames = new ArrayList<>();
     private Map<String,Object> mappingObjs = new HashMap<>();
     private Map<String,Method> mappingMethods = new HashMap<>();

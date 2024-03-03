@@ -23,6 +23,7 @@ public class RequestMappingHandlerMapping implements HandlerMapping {
     protected void initMapping() {
     	Class<?> clz = null;
     	Object obj = null;
+		// 遍历所有的 bean
     	String[] controllerNames = this.wac.getBeanDefinitionNames();
     	for (String controllerName : controllerNames) {
 			try {
@@ -38,10 +39,12 @@ public class RequestMappingHandlerMapping implements HandlerMapping {
     		Method[] methods = clz.getDeclaredMethods();
     		if(methods!=null){
     			for(Method method : methods){
+					// 处理带有 RequestMapping 注解的方法
     				boolean isRequestMapping = method.isAnnotationPresent(RequestMapping.class);
     				if (isRequestMapping){
     					String methodName = method.getName();
     					String urlmapping = method.getAnnotation(RequestMapping.class).value();
+						// 存储映射关系
     					this.mappingRegistry.getUrlMappingNames().add(urlmapping);
     					this.mappingRegistry.getMappingObjs().put(urlmapping, obj);
     					this.mappingRegistry.getMappingMethods().put(urlmapping, method);

@@ -30,6 +30,7 @@ import com.test.HelloWorldBean;
 
 /**
  * Servlet implementation class DispatcherServlet
+ * 整个系统用唯一一个 DispatcherServlet 来处理请求。请求和 bean 管理解耦
  */
 public class DispatcherServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -68,7 +69,7 @@ public class DispatcherServlet extends HttpServlet {
 		}
         
         this.packageNames = XmlScanComponentHelper.getNodeValue(xmlPath);
-        
+        // servlet 路径、父上下文(ioc容器)
     	this.webApplicationContext = new AnnotationConfigWebApplicationContext(sContextConfigLocation,this.parentApplicationContext);
 
 
@@ -78,7 +79,7 @@ public class DispatcherServlet extends HttpServlet {
     
     protected void Refresh() {
     	initController();
-    	
+    	// 扫描 servlet 中配置的 controller 路径
 		initHandlerMappings(this.webApplicationContext);
 		initHandlerAdapters(this.webApplicationContext);
 		initViewResolvers(this.webApplicationContext);
@@ -135,7 +136,7 @@ public class DispatcherServlet extends HttpServlet {
 		if (handlerMethod == null) {
 			return;
 		}
-		
+		// 包装 url 映射后的处理过程
 		HandlerAdapter ha = this.handlerAdapter;
 
 		ha.handle(processedRequest, response, handlerMethod);
