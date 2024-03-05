@@ -31,11 +31,18 @@ import com.test.HelloWorldBean;
 /**
  * Servlet implementation class DispatcherServlet
  * 整个系统用唯一一个 DispatcherServlet 来处理请求。请求和 bean 管理解耦
+ * TODO：父上下文 refresh 的时候不会将 controller 实例初始化吗？
  */
 public class DispatcherServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	public static final String WEB_APPLICATION_CONTEXT_ATTRIBUTE = DispatcherServlet.class.getName() + ".CONTEXT";
+	/**
+	 * web 应用上下文，由 dispatcher 加载产生的
+	 */
 	private WebApplicationContext webApplicationContext;
+	/**
+	 * 父上下文：ioc 容器
+	 */
 	private WebApplicationContext parentApplicationContext;
 	
     private String sContextConfigLocation;
@@ -69,7 +76,7 @@ public class DispatcherServlet extends HttpServlet {
 		}
         
         this.packageNames = XmlScanComponentHelper.getNodeValue(xmlPath);
-        // servlet 路径、父上下文(ioc容器)
+        // 传参：servlet 路径、父上下文(ioc容器)
     	this.webApplicationContext = new AnnotationConfigWebApplicationContext(sContextConfigLocation,this.parentApplicationContext);
 
 
