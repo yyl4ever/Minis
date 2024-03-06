@@ -131,17 +131,28 @@ public class DispatcherServlet extends HttpServlet {
 			response.getWriter().close();
 			return;
 		}
-		
+		// 用 jsp 进行 render
 		String sTarget = mv.getViewName();
 		Map<String, Object> modelMap = mv.getModel();
 		View view = resolveViewName(sTarget, modelMap, request);
+		// 抽象为接口了，不一定把数据携带到 jsp 页面
+		// view 跟 dispatcher 在功能上解耦了
 		view.render(modelMap, request, response);
 		
 	}
-	
+
+	/**
+	 *
+	 * @param viewName jsp 页面地址
+	 * @param model
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
 	protected View resolveViewName(String viewName, Map<String, Object> model,
 			HttpServletRequest request) throws Exception {
 		if (this.viewResolver != null) {
+			// 拼接要跳转的 jsp 页面
 			View view = viewResolver.resolveViewName(viewName);
 			if (view != null) {
 				return view;

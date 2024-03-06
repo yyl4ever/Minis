@@ -5,8 +5,14 @@ import com.minis.web.servlet.ViewResolver;
 
 public class InternalResourceViewResolver implements ViewResolver{
 	private Class<?> viewClass = null;
-	private String viewClassName = "";	
+	private String viewClassName = "";
+	/**
+	 * 比如 /jsp
+	 */
 	private String prefix = "";
+	/**
+	 * 比如 .jsp
+	 */
 	private String suffix = "";
 	private String contentType;
 	
@@ -64,6 +70,7 @@ public class InternalResourceViewResolver implements ViewResolver{
 		Class<?> viewClass = getViewClass();
 
 		View view = (View) viewClass.newInstance();
+		// 地址的拼接可以由用户自定义
 		view.setUrl(getPrefix() + viewName + getSuffix());
 
 		String contentType = getContentType();

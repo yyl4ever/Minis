@@ -46,9 +46,10 @@ public class JstlView implements View{
 	public void render(Map<String, ?> model, HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		for (Entry<String, ?> e : model.entrySet()) {
+			// 将 model 里面的数据塞到 request
 			request.setAttribute(e.getKey(),e.getValue());
 		}
-		
+		// 跳转到目标 jsp
 		request.getRequestDispatcher(getUrl()).forward(request, response);
 	}
 

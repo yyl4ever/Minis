@@ -6,6 +6,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public interface View {
+	/**
+	 * 由 view 来完成 reder 功能
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
 	void render(Map<String, ?> model, HttpServletRequest request, HttpServletResponse response)
 			throws Exception;
 

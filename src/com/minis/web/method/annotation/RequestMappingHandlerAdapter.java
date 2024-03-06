@@ -88,17 +88,21 @@ public class RequestMappingHandlerAdapter implements HandlerAdapter,ApplicationC
 			Class<?> returnType = invocableMethod.getReturnType();
 					
 			ModelAndView mav = null;
-			if (invocableMethod.isAnnotationPresent(ResponseBody.class)){ //ResponseBody
+			// 判断调用方法上有没有 @ResponseBody 注解
+			if (invocableMethod.isAnnotationPresent(ResponseBody.class)){
+				// 将转换后的数据直接写入到 response
 		        this.messageConverter.write(returnObj, response);
 			}
 			else if (returnType == void.class) {
 				
 			}
 			else {
+				// 返回的是前端页面
 				if (returnObj instanceof ModelAndView) {
 					mav = (ModelAndView)returnObj;
 				}
 				else if(returnObj instanceof String) {
+					// 字符串也认为是前端页面
 					String sTarget = (String)returnObj;
 					mav = new ModelAndView();
 					mav.setViewName(sTarget);
