@@ -30,6 +30,7 @@ import com.test.controller.HelloWorldBean;
 
 /**
  * Servlet implementation class DispatcherServlet
+ * 把困难留给自己，把方便带给客户
  */
 public class DispatcherServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -105,6 +106,7 @@ public class DispatcherServlet extends HttpServlet {
 		
 		HandlerAdapter ha = this.handlerAdapter;
 
+		// 内部进行了参数绑定
 		mv = ha.handle(processedRequest, response, handlerMethod);
 
 		//render(processedRequest, response, mv);

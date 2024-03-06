@@ -11,20 +11,31 @@ public class PropertyEditorRegistrySupport {
 	private Map<Class<?>, PropertyEditor> customEditors;
 
 	public PropertyEditorRegistrySupport() {
+		// 不同类型的参数转换器
 		registerDefaultEditors();
 	}
 	
 	protected void registerDefaultEditors() {
+		// 注册默认的转换器
 		createDefaultEditors();
 	}
 
+	/**
+	 * 获取默认的转换器
+	 * @param requiredType
+	 * @return
+	 */
 	public PropertyEditor getDefaultEditor(Class<?> requiredType) {
 		return this.defaultEditors.get(requiredType);
 	}
 
+	/**
+	 * 创建默认的转换器 editor, 对每一个数据类型规定一个默认的转换器
+	 */
 	private void createDefaultEditors() {
 		this.defaultEditors = new HashMap<>(64);
 
+		// 如果为空，在类型转换的时候会抛出异常
 		// Default instances of collection editors.
 		this.defaultEditors.put(int.class, new CustomNumberEditor(Integer.class, false));
 		this.defaultEditors.put(Integer.class, new CustomNumberEditor(Integer.class, true));
@@ -41,6 +52,11 @@ public class PropertyEditorRegistrySupport {
 
 	}
 
+	/**
+	 * 注册客户自定义的转换器
+	 * @param requiredType
+	 * @param propertyEditor
+	 */
 	public void registerCustomEditor( Class<?> requiredType,  PropertyEditor propertyEditor) {
 		if (this.customEditors == null) {
 			this.customEditors = new LinkedHashMap<>(16);
@@ -48,6 +64,11 @@ public class PropertyEditorRegistrySupport {
 		this.customEditors.put(requiredType, propertyEditor);
 	}
 
+	/**
+	 * 查找客户自定义的转换器
+	 * @param requiredType
+	 * @return
+	 */
 	public PropertyEditor findCustomEditor( Class<?> requiredType) {
 		Class<?> requiredTypeToUse = requiredType;
 		return getCustomEditor(requiredTypeToUse);
@@ -58,6 +79,11 @@ public class PropertyEditorRegistrySupport {
 		return (elementType != null && this.customEditors != null && this.customEditors.containsKey(elementType));
 	}
 
+	/**
+	 * 获取客户自定义的转换器
+	 * @param requiredType
+	 * @return
+	 */
 	public PropertyEditor getCustomEditor( Class<?> requiredType) {
 		if (requiredType == null || this.customEditors == null) {
 			return null;

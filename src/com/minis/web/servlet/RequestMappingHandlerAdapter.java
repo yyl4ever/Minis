@@ -19,6 +19,7 @@ public class RequestMappingHandlerAdapter implements HandlerAdapter {
 	public RequestMappingHandlerAdapter(WebApplicationContext wac) {
 		this.wac = wac;
 		try {
+			// 用于自定义数据转换器的注入
 			this.webBindingInitializer = (WebBindingInitializer) this.wac.getBean("webBindingInitializer");
 		} catch (BeansException e) {
 			e.printStackTrace();
@@ -45,21 +46,34 @@ public class RequestMappingHandlerAdapter implements HandlerAdapter {
 		return mv;
 
 	}
-	
+
+	/**
+	 *
+	 * @param request
+	 * @param response
+	 * @param handlerMethod 某个处理请求的方法，比如 /sayHi?name=yyl 对应的 sayHi(Person person) 方法
+	 * @throws Exception
+	 */
 	protected void invokeHandlerMethod(HttpServletRequest request,
 			HttpServletResponse response, HandlerMethod handlerMethod) throws Exception {
 
 
 			WebDataBinderFactory binderFactory = new WebDataBinderFactory();
-			
+
+			// 存储方法的所有参数
 			Parameter[] methodParameters = handlerMethod.getMethod().getParameters();
 			Object[] methodParamObjs = new Object[methodParameters.length];
 			
 			int i = 0;
+			// 对调用方法里的每一个参数进行绑定，按照参数出现的次序进行绑定
 			for (Parameter methodParameter : methodParameters) {
+				// 空对象，需要绑定的操作目标，比如 Person.class 的实例
 				Object methodParamObj = methodParameter.getType().newInstance();
+				// 给这个参数创建 WebDataBinder
 				WebDataBinder wdb = binderFactory.createBinder(request, methodParamObj, methodParameter.getName());
+				// 注册自定义的 editor，方便进行自定义参数绑定
 				webBindingInitializer.initBinder(wdb);
+				// 完成参数的绑定
 				wdb.bind(request);
 				methodParamObjs[i] = methodParamObj;
 				i++;

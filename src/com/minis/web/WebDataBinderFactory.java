@@ -2,6 +2,9 @@ package com.minis.web;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 管理 WebDataBinder
+ */
 public class WebDataBinderFactory {
 	public WebDataBinder createBinder(HttpServletRequest request, Object target, String objectName) {
 		WebDataBinder wbd= new WebDataBinder(target,objectName);

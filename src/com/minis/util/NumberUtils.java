@@ -61,9 +61,10 @@ public abstract class NumberUtils {
 
 
 	/**
+	 * 将给定的 Number 类型对象转换为目标类（该类需继承自 Number 类）
 	 * Convert the given number into an instance of the given target class.
 	 * @param number the number to convert
-	 * @param targetClass the target class to convert to
+	 * @param targetClass the target class to convert to 目标类的具体类型，但必须是 Number 类及其子类
 	 * @return the converted number
 	 * @throws IllegalArgumentException if the target class is not supported
 	 * (i.e. not a standard Number subclass as included in the JDK)
@@ -79,12 +80,13 @@ public abstract class NumberUtils {
 	@SuppressWarnings("unchecked")
 	public static <T extends Number> T convertNumberToTargetClass(Number number, Class<T> targetClass)
 			throws IllegalArgumentException {
-
-
+		// 判断传入的 number 对象是否已经是 targetClass 类型或者其子类。如果是，则说明无需进行转换，可以直接将 number 强制转换为目标类型 T 并返回。
+		// 比如 10 是 Integer.class 的实例，但不是 Double.class 的实例
 		if (targetClass.isInstance(number)) {
 			return (T) number;
 		}
 		else if (Byte.class == targetClass) {
+			// 个人觉得统一先转换为 long，统一处理，应该比较优雅，不至于写得五花八门，各种转换
 			long value = checkedLongValue(number, targetClass);
 			if (value < Byte.MIN_VALUE || value > Byte.MAX_VALUE) {
 				raiseOverflowException(number, targetClass);
@@ -229,38 +231,51 @@ public abstract class NumberUtils {
 	 * Parse the given {@code text} into a {@link Number} instance of the
 	 * given target class, using the supplied {@link NumberFormat}.
 	 * <p>Trims the input {@code String} before attempting to parse the number.
-	 * @param text the text to convert
-	 * @param targetClass the target class to parse into
+	 * @param text the text to convert 表示数字文本的字符串
+	 * @param targetClass the target class to parse into 目标类型的类 （继承自 Number 类）
 	 * @param numberFormat the {@code NumberFormat} to use for parsing (if
-	 * {@code null}, this method falls back to {@link #parseNumber(String, Class)})
+	 * {@code null}, this method falls back to {@link #parseNumber(String, Class)}) 解析数字格式
 	 * @return the parsed number
 	 * @throws IllegalArgumentException if the target class is not supported
 	 * (i.e. not a standard Number subclass as included in the JDK)
 	 * @see NumberFormat#parse
 	 * @see #convertNumberToTargetClass
 	 * @see #parseNumber(String, Class)
+	 * 根据提供的 numberFormat 解析字符串 text 成相应的数字类型，并确保最终转换为目标类型 T。在解析过程中，会对 BigDecimal 特殊处理以满足精度要求
 	 */
 	public static <T extends Number> T parseNumber(
 			String text, Class<T> targetClass,  NumberFormat numberFormat) {
 
 		if (numberFormat != null) {
+			/**
+			 * DecimalFormat是Java中用于格式化数字的类。其中一个特性是，它可以设置为解析BigDecimal类型。
+			 * 默认情况下，DecimalFormat可能不设置为解析BigDecimal，而只是解析Double或Float等基础类型。
+			 * 但在某些情况下，我们可能希望从字符串中解析出精确的BigDecimal值，而不是可能丢失精度的Double或Float。
+			 * 因此，这段代码的目的是在需要的时候，临时开启DecimalFormat对BigDecimal的解析功能，并在使用完毕后重置该状态。
+			 */
 			DecimalFormat decimalFormat = null;
 			boolean resetBigDecimal = false;
+			// 如果 numberFormat 是 DecimalFormat 类型，将其转换为 decimalFormat 变量
 			if (numberFormat instanceof DecimalFormat) {
 				decimalFormat = (DecimalFormat) numberFormat;
+				// 进一步判断是否需要将 BigDecimal 设置为解析目标类型
+				// 如果目标类型是 BigDecimal 且当前 decimalFormat 没有设置为解析 BigDecimal，则临时开启对 BigDecimal 的解析并记录需要在最后重置这个状态。
 				if (BigDecimal.class == targetClass && !decimalFormat.isParseBigDecimal()) {
 					decimalFormat.setParseBigDecimal(true);
 					resetBigDecimal = true;
 				}
 			}
 			try {
+				// 使用 numberFormat 解析输入的 text 字符串，并将结果转换为 Number 类型的对象 number
 				Number number = numberFormat.parse(StringUtils.trimAllWhitespace(text));
+				// 调用 convertNumberToTargetClass 方法，将解析得到的 Number 对象转换为目标类型 T 并返回
 				return convertNumberToTargetClass(number, targetClass);
 			}
 			catch (ParseException ex) {
 				throw new IllegalArgumentException("Could not parse number: " + ex.getMessage());
 			}
 			finally {
+				// 在处理完 numberFormat 不为 null 的情况后，使用 finally 块确保即使发生异常也能正确地还原 decimalFormat 的状态（如果之前开启了 setParseBigDecimal(true)）
 				if (resetBigDecimal) {
 					decimalFormat.setParseBigDecimal(false);
 				}
