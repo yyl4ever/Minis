@@ -31,7 +31,8 @@ public class UserService {
 	public User getUserInfo(int userid) {
 		final String sql = "select id, name,birthday from users where id=?";
 		return (User)jdbcTemplate.query(sql, new Object[]{new Integer(userid)},
-				(pstmt)->{			
+				(pstmt)->{
+					// 回调方法，在内部方法执行完成后触发 -- Callback 模式
 					ResultSet rs = pstmt.executeQuery();
 					User rtnUser = null;
 					if (rs.next()) {

@@ -53,6 +53,7 @@ public class JdbcTemplate {
 		PreparedStatement pstmt = null;
 		
 		try {
+			// 获取连接 -- 执行的时候才拿到连接
 			con = dataSource.getConnection();
 
 			pstmt = con.prepareStatement(sql);
@@ -72,7 +73,7 @@ public class JdbcTemplate {
 				}
 			}
 			
-			
+			// 执行方法回调，避免冗余类
 			return pstmtcallback.doInPreparedStatement(pstmt);
 		}
 		catch (Exception e) {

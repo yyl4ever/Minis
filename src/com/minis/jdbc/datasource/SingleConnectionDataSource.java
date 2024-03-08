@@ -113,13 +113,14 @@ public class SingleConnectionDataSource implements DataSource {
 		if (connProps != null) {
 			mergedProps.putAll(connProps);
 		}
+		// 覆盖
 		if (username != null) {
 			mergedProps.setProperty("user", username);
 		}
 		if (password != null) {
 			mergedProps.setProperty("password", password);
 		}
-
+		// 最后调用 DriverManager.getConnection
 		this.connection = getConnectionFromDriverManager(getUrl(),mergedProps);
 
 		return this.connection;
