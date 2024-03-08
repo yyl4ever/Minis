@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javax.sql.DataSource;
 
 public class PooledDataSource implements DataSource{
+	// ArrayList 不是一个最佳实践，思考下是否有更好的方案
 	private List<PooledConnection> connections = null;
 	private String driverClassName;
 	private String url;
@@ -30,10 +31,12 @@ public class PooledDataSource implements DataSource{
 		this.connections = new ArrayList<>(initialSize);
 		try {
 			for(int i = 0; i < initialSize; i++){
+				// 初始化时就激活所有的连接
 				Connection connect = DriverManager.getConnection(url, username, password);
 				PooledConnection pooledConnection = new PooledConnection(connect, false);
+				// 放到池子里面
 				this.connections.add(pooledConnection);
-System.out.println("********add connection pool*********");				
+				System.out.println("********add connection pool*********");
 			}
 		} catch (Exception e) {		
 			e.printStackTrace();
@@ -67,8 +70,9 @@ System.out.println("********add connection pool*********");
 			initPool();
 		}
 
+		// 获取可用连接
 		PooledConnection pooledConnection= getAvailableConnection();
-		
+		// 如果没有可用连接，就休眠一会儿，继续尝试获取
 		while(pooledConnection == null){
 			pooledConnection = getAvailableConnection();
 			
@@ -87,6 +91,7 @@ System.out.println("********add connection pool*********");
 	private PooledConnection getAvailableConnection() throws SQLException{
 		for(PooledConnection pooledConnection : this.connections){
 			if (!pooledConnection.isActive()){
+				// 拿一个空闲的连接
 				pooledConnection.setActive(true);
 				return pooledConnection;
 			}

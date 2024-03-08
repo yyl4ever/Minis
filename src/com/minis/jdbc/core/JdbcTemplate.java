@@ -90,6 +90,7 @@ public class JdbcTemplate {
 			con = dataSource.getConnection();
 
 			pstmt = con.prepareStatement(sql);
+			// 参数设置 -- 专门的事情让专门的组件处理
 			ArgumentPreparedStatementSetter argumentSetter = new ArgumentPreparedStatementSetter(args);	
 			argumentSetter.setValues(pstmt);
 			rs = pstmt.executeQuery();

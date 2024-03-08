@@ -20,7 +20,13 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 
 public class PooledConnection implements Connection{
+	/**
+	 * 原生 jdbc 连接
+	 */
 	private Connection connection;
+	/**
+	 * 是否可用；池中的连接不会关闭
+	 */
 	private boolean active;
 	
 	public PooledConnection() {	
@@ -49,6 +55,7 @@ public class PooledConnection implements Connection{
 	
 	@Override
 	public void close() throws SQLException {
+		// 不会关闭连接，只是将可用标志改为不可用
 		this.active = false;
 	}
 	
