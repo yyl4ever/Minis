@@ -12,6 +12,7 @@ import javax.sql.DataSource;
 
 
 public class JdbcTemplate {
+
 	private DataSource dataSource;
 	
 	public void setDataSource(DataSource dataSource) {
@@ -110,4 +111,6 @@ public class JdbcTemplate {
 
 		return null;
 	}
+
+	// TODO 增加 update 方法等
 }

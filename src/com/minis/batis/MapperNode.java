@@ -1,5 +1,9 @@
 package com.minis.batis;
 
+/**
+ * 对应 mapper.xml 文件
+ * 框架的构建，核心在于解耦，让专门的部件处理专门的事情
+ */
 public class MapperNode {
     String namespace;
     String id;
@@ -7,6 +11,8 @@ public class MapperNode {
     String resultType;
     String sql;
     String parameter;
+
+	// TODO：拓展：增加属性 sqlType，表明这个 sql 的类型，如 Update
     
 	public String getNamespace() {
 		return namespace;

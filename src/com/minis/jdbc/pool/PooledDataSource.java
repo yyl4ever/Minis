@@ -14,6 +14,41 @@ import java.util.logging.Logger;
 import javax.sql.DataSource;
 
 public class PooledDataSource implements DataSource{
+	/**
+	 * TODO 拓展：
+	 * 线程安全：
+	 * 提供两个队列，一个用于忙的连接，一个用于空闲连接：
+	 * private BlockingQueue<PooledConnection> busy;
+	 * private BlockingQueue<PooledConnection> idle;
+	 * 获取数据库连接就从idle队列中获取：
+	 * while (true) {
+	 * // 死等一个空闲连接。然后加入忙队列
+	 * conn = idle.poll();
+	 * }
+	 *
+	 * 还应当判断连接数是否到了最大，如果没有，则要先创建一个新的连接。创建的时候要小心了，因为是多线程的，所以要再次校验是否超过最大连接数，如使用CAS技术：
+	 * if (size.get() < getPoolProperties().getMaxActive()) {
+	 * // 如果超过，则表明在并发环境下有其他线程也同时增加了连接数，导致总数超过了设定的最大值
+	 *       if (size.addAndGet(1) > getPoolProperties().getMaxActive()) {
+	 *       // 若确实超过最大限制，则需要回滚这次尝试增加的操作，即调用 size.decrementAndGet() 减少一个连接计数
+	 *         size.decrementAndGet();
+	 *       } else {
+	 *         return createConnection(now, con, username, password);
+	 *       }
+	 *     }
+	 *
+	 * 还应当设置一个timeout，如果在规定的时间内还没有拿到一个连接，就要抛出一个异常
+	 * if ((System.currentTimeMillis() - now) >= maxWait) {
+	 *         throw new PoolExhaustedException(
+	 *           "Timeout: Unable to fetch a connection in " + (maxWait / 1000) +
+	 *           " seconds.");
+	 *     } else {
+	 *         continue;
+	 *     }
+	 *
+	 * 关闭连接，也就是从busy队列移除，然后加入到idle队列中
+	 *
+	 */
 	private List<PooledConnection> connections = null;
 	private String driverClassName;
 	private String url;
