@@ -5,6 +5,9 @@ import java.lang.reflect.Method;
 import com.minis.util.PatternMatchUtils;
 
 public class NameMatchMethodPointcut implements MethodMatcher, Pointcut {
+    /**
+     * 用户配置的规则
+     */
     private String mappedName = "";
 
     public void setMappedName(String mappedName) {
