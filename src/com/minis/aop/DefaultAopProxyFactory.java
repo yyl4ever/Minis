@@ -4,6 +4,7 @@ public class DefaultAopProxyFactory implements AopProxyFactory {
 
 	@Override
 	public AopProxy createAopProxy(Object target) {
+		// 创建动态代理
 		//if (targetClass.isInterface() || Proxy.isProxyClass(targetClass)) {
 			return new JdkDynamicAopProxy(target);
 		//}

@@ -4,6 +4,9 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+/**
+ * 动态代理的目的：剥离例行性代码
+ */
 public class JdkDynamicAopProxy implements AopProxy, InvocationHandler {
 	Object target;
 	
@@ -17,7 +20,7 @@ public class JdkDynamicAopProxy implements AopProxy, InvocationHandler {
 		System.out.println("----------Proxy new psroxy instance for  ---------"+target);		
 		System.out.println("----------Proxy new psroxy instance  classloader ---------"+JdkDynamicAopProxy.class.getClassLoader());
 		System.out.println("----------Proxy new psroxy instance  interfaces  ---------"+target.getClass().getInterfaces());
-		
+		// 创建动态代理
 		Object obj = Proxy.newProxyInstance(JdkDynamicAopProxy.class.getClassLoader(), target.getClass().getInterfaces(), this);
 		System.out.println("----------Proxy new psroxy instance created r ---------"+obj);		
 		return obj;

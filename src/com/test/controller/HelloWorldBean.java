@@ -74,10 +74,10 @@ public class HelloWorldBean {
 	
 	@RequestMapping("/testaop")
 	public void doTestAop(HttpServletRequest request, HttpServletResponse response) {
-		
+		// 这种写法具有侵入性，在业务逻辑中写成这样，不优雅，目标：非侵入式编程
 		//DynamicProxy proxy = new DynamicProxy(action);
 		//IAction p = (IAction)proxy.getProxy();
-	System.out.println("action -------------- " + action + "----------------");
+		System.out.println("action -------------- " + action + "----------------");
 
 		action.doAction();
 		

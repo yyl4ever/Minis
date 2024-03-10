@@ -36,7 +36,8 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
     	}
     }
 
-    public Object getBean(String beanName) throws BeansException{
+    @Override
+	public Object getBean(String beanName) throws BeansException{
         Object singleton = this.getSingleton(beanName);
         
         if (singleton == null) {
@@ -77,6 +78,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 //        	throw new BeansException("bean is null.");
 //        }
 
+		// 处理 factoryBean，获取底层包含的对象（被代理过）
 		//process Factory Bean
         if (singleton instanceof FactoryBean) {
     		System.out.println("factory bean -------------- " + beanName + "----------------"+singleton);
