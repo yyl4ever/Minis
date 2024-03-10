@@ -2,6 +2,9 @@ package com.minis.aop;
 
 import java.lang.reflect.Method;
 
+/**
+ * 包装了目标方法
+ */
 public class ReflectiveMethodInvocation implements MethodInvocation{
 	protected final Object proxy;
 	protected final Object target;
@@ -49,7 +52,12 @@ public class ReflectiveMethodInvocation implements MethodInvocation{
 	public void setTargetClass(Class<?> targetClass) {
 		this.targetClass = targetClass;
 	}
-	
+
+	/**
+	 * 对目标方法的调用
+	 * @return
+	 * @throws Throwable
+	 */
 	public Object proceed() throws Throwable {
 		return this.method.invoke(this.target, this.arguments);
 	}

@@ -9,11 +9,17 @@ import com.minis.util.ClassUtils;
 public class ProxyFactoryBean  implements FactoryBean<Object>,BeanFactoryAware {
 	private BeanFactory beanFactory;
 	private AopProxyFactory aopProxyFactory;
+	/**
+	 * 拦截器名称，用于 ioc 容器注入
+	 */
 	private String interceptorName;
 	private String targetName;
 	private Object target;
 	private ClassLoader proxyClassLoader = ClassUtils.getDefaultClassLoader();
 	private Object singletonInstance;
+	/**
+	 * 内部设置拦截器，advisor 里面设置 advice
+	 */
 	private Advisor advisor;
 
 	public ProxyFactoryBean() {
@@ -49,7 +55,10 @@ public class ProxyFactoryBean  implements FactoryBean<Object>,BeanFactoryAware {
 		initializeAdvisor();
 		return getSingletonInstance();
 	}
-	
+
+	/**
+	 * 设置拦截器
+	 */
 	private synchronized void initializeAdvisor() {
 		Object advice = null;
 		MethodInterceptor mi = null;
@@ -80,6 +89,7 @@ public class ProxyFactoryBean  implements FactoryBean<Object>,BeanFactoryAware {
 		return this.singletonInstance;
 	}
 	protected AopProxy createAopProxy() {
+		// 传入增强器 advisor
 		return getAopProxyFactory().createAopProxy(target,this.advisor);
 	}
 	protected Object getProxy(AopProxy aopProxy) {
