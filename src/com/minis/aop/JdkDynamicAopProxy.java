@@ -22,7 +22,7 @@ public class JdkDynamicAopProxy implements AopProxy, InvocationHandler {
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		Class<?> targetClass = (target != null ? target.getClass() : null);
-		
+		// 剥离规则匹配的逻辑，解耦的思想
 		if (this.advisor.getPointcut().getMethodMatcher().matches(method, targetClass)) {
 			//if (method.getName().equals("doAction")) {
 			MethodInterceptor interceptor = this.advisor.getMethodInterceptor();

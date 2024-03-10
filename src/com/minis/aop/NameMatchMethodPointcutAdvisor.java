@@ -3,6 +3,9 @@ package com.minis.aop;
 public class NameMatchMethodPointcutAdvisor implements PointcutAdvisor{
 	private Advice advice = null;
 	private MethodInterceptor methodInterceptor;
+	/**
+	 * 方法匹配规则
+	 */
 	private String mappedName;
 	private final NameMatchMethodPointcut pointcut = new NameMatchMethodPointcut();
 
@@ -21,7 +24,10 @@ public class NameMatchMethodPointcutAdvisor implements PointcutAdvisor{
 		return this.methodInterceptor;
 	}
 
-
+	/**
+	 * ioc 注入
+	 * @param advice
+	 */
 	public void setAdvice(Advice advice) {
 		this.advice = advice;
 

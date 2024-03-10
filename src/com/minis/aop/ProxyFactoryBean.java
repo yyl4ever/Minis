@@ -62,6 +62,7 @@ public class ProxyFactoryBean  implements FactoryBean<Object>,BeanFactoryAware {
 		} catch (BeansException e) {
 			e.printStackTrace();
 		}
+		// todo 感觉怪怪的， advice 怎么能强转为 PointcutAdvisor ？
 		this.advisor = (PointcutAdvisor) advice;
 //		if (advice instanceof BeforeAdvice) {
 //			mi = new MethodBeforeAdviceInterceptor((MethodBeforeAdvice)advice);
