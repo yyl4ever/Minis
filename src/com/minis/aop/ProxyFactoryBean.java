@@ -6,6 +6,13 @@ import com.minis.beans.factory.BeanFactoryAware;
 import com.minis.beans.factory.FactoryBean;
 import com.minis.util.ClassUtils;
 
+/**
+ * ProxyFactoryBean 能够：
+ *
+ * 基于接口的代理：如果目标类实现了至少一个接口，那么Spring会创建一个JDK动态代理。
+ * 基于类的代理：若目标类没有接口或者需要代理未公开接口的方法，则可以通过CGLIB库创建一个子类代理。
+ * 配置 ProxyFactoryBean 后，它会在容器初始化过程中被实例化，并且它的getObject()方法会被调用来获取实际的代理对象，这个代理对象将替代原始bean在应用上下文中发挥作用。
+ */
 public class ProxyFactoryBean  implements FactoryBean<Object>,BeanFactoryAware {
 	private BeanFactory beanFactory;
 	private AopProxyFactory aopProxyFactory;

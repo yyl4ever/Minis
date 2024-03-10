@@ -34,6 +34,7 @@ public abstract class AbstractAutowireCapableBeanFactory
 		// 对每个 bean 处理器，调用方法 postProcessBeforeInitialization
 		for (BeanPostProcessor beanProcessor : getBeanPostProcessors()) {
 			beanProcessor.setBeanFactory(this);
+			// 会触发 BeanNameAutoProxyCreator，符合规则的 bean 被包装为 ProxyFactoryBean
 			result = beanProcessor.postProcessBeforeInitialization(result, beanName);
 			if (result == null) {
 				return result;
